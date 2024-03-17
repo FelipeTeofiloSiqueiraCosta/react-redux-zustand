@@ -1,8 +1,11 @@
 import ReactPlayer from "react-player";
 import { Header } from "../components/Header";
 import { Module } from "../components/Module";
+import { useAppSelector } from "../store";
 
 export function Player() {
+  const modules = useAppSelector((state) => state.player.course.modules);
+
   return (
     <div className="h-screen bg-zinc-950 text-zinc-50 flex justify-center items-center">
       <div className="w-[1100px] flex flex-col gap-6">
@@ -22,30 +25,16 @@ export function Player() {
             </div>
           </div>
           <aside className="absolute top-0 bottom-0 right-0 w-80 border-l divide-y-2 divide-zinc-600 border-zinc-800 bg-zinc-900 overflow-y-scroll scrollbar scrollbar-thin scrollbar-track-zinc-950 scrollbar-thumb-zinc-800">
-            <Module
-              number={1}
-              title="Desvendando o Redux"
-              videoClasses={[
-                { minutes: "10:00", title: "Introdução ao modulo" },
-                { minutes: "10:00", title: "O que é Redux" },
-              ]}
-            />
-            <Module
-              number={1}
-              title="Desvendando o Redux"
-              videoClasses={[
-                { minutes: "10:00", title: "Introdução ao modulo" },
-                { minutes: "10:00", title: "O que é Redux" },
-              ]}
-            />
-            <Module
-              number={1}
-              title="Desvendando o Redux"
-              videoClasses={[
-                { minutes: "10:00", title: "Introdução ao modulo" },
-                { minutes: "10:00", title: "O que é Redux" },
-              ]}
-            />
+            {modules.map(({ lessons, title, id }, index) => {
+              return (
+                <Module
+                  number={index + 1}
+                  title={title}
+                  lessons={lessons}
+                  key={id}
+                />
+              );
+            })}
           </aside>
         </main>
       </div>

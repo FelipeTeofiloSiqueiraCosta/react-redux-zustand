@@ -5,9 +5,9 @@ import * as Collapsible from "@radix-ui/react-collapsible";
 interface ModuleProps {
   number: number;
   title: string;
-  videoClasses: { title: string; minutes: string }[];
+  lessons: { id: string; title: string; duration: string }[];
 }
-export function Module({ videoClasses, number, title }: ModuleProps) {
+export function Module({ lessons, number, title }: ModuleProps) {
   return (
     <Collapsible.Root className="group">
       <Collapsible.Trigger asChild>
@@ -18,7 +18,7 @@ export function Module({ videoClasses, number, title }: ModuleProps) {
           <div className="flex flex-col gap-1 text-left">
             <strong className="text-sm">{title}</strong>
             <span className="text-xs text-zinc-400">
-              {videoClasses.length} aulas
+              {lessons.length} aulas
             </span>
           </div>
           <ChevronDown className="h-4 w-4 ml-auto text-zinc-400 group-data-[state=open]:rotate-180 transition-all" />
@@ -26,12 +26,12 @@ export function Module({ videoClasses, number, title }: ModuleProps) {
       </Collapsible.Trigger>
       <Collapsible.Content asChild>
         <nav className="flex flex-col relative gap-4 p-6">
-          {videoClasses.map((item) => {
+          {lessons.map((item) => {
             return (
               <Lesson
                 key={item.title}
                 title={item.title}
-                minutes={item.minutes}
+                minutes={item.duration}
               />
             );
           })}
