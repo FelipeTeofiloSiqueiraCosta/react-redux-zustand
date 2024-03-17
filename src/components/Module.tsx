@@ -3,11 +3,12 @@ import { Lesson } from "./Lesson";
 import * as Collapsible from "@radix-ui/react-collapsible";
 
 interface ModuleProps {
+  index: number;
   number: number;
   title: string;
   lessons: { id: string; title: string; duration: string }[];
 }
-export function Module({ lessons, number, title }: ModuleProps) {
+export function Module({ lessons, number, title, index }: ModuleProps) {
   return (
     <Collapsible.Root className="group">
       <Collapsible.Trigger asChild>
@@ -29,6 +30,7 @@ export function Module({ lessons, number, title }: ModuleProps) {
           {lessons.map((item) => {
             return (
               <Lesson
+                moduleIndex={index}
                 id={item.id}
                 key={item.id}
                 title={item.title}
