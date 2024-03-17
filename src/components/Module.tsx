@@ -29,7 +29,8 @@ export function Module({ lessons, number, title }: ModuleProps) {
           {lessons.map((item) => {
             return (
               <Lesson
-                key={item.title}
+                id={item.id}
+                key={item.id}
                 title={item.title}
                 minutes={item.duration}
               />
