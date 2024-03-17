@@ -4,19 +4,21 @@ import { select } from "../store/slices/selectedLesson";
 import { useAppSelector } from "../store";
 
 interface LessonProps {
-  id: string;
+  index: number;
   title: string;
   minutes: string;
   moduleIndex: number;
 }
-export function Lesson({ title, minutes, id, moduleIndex }: LessonProps) {
+export function Lesson({ title, minutes, index, moduleIndex }: LessonProps) {
   const dispatch = useDispatch();
   const selectedLesson = useAppSelector((state) => state.selectedLesson);
 
   function handleSelectLesson() {
-    dispatch(select({ lessonId: id, moduleIndex }));
+    dispatch(select({ lessonIndex: index, moduleIndex }));
   }
-  const isSelected = selectedLesson.lessonId === id;
+  const isSelected =
+    selectedLesson.lessonIndex === index &&
+    selectedLesson.moduleIndex === moduleIndex;
 
   return (
     <button

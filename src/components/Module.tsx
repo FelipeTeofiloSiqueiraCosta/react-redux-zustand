@@ -27,11 +27,11 @@ export function Module({ lessons, number, title, index }: ModuleProps) {
       </Collapsible.Trigger>
       <Collapsible.Content asChild>
         <nav className="flex flex-col relative gap-4 p-6">
-          {lessons.map((item) => {
+          {lessons.map((item, lessonIndex) => {
             return (
               <Lesson
                 moduleIndex={index}
-                id={item.id}
+                index={lessonIndex}
                 key={item.id}
                 title={item.title}
                 minutes={item.duration}
