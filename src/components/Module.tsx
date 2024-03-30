@@ -1,12 +1,13 @@
 import { ChevronDown } from "lucide-react";
 import { Lesson } from "./Lesson";
 import * as Collapsible from "@radix-ui/react-collapsible";
+import { Lesson as LessonType } from "../store/slices/player";
 
 interface ModuleProps {
   index: number;
   number: number;
   title: string;
-  lessons: { id: string; title: string; duration: string }[];
+  lessons: LessonType[];
 }
 export function Module({ lessons, number, title, index }: ModuleProps) {
   return (

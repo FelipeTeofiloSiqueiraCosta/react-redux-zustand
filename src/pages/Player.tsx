@@ -4,6 +4,13 @@ import { Module } from "../components/Module";
 import { useAppSelector } from "../store";
 import { useDispatch } from "react-redux";
 import { selectNextLesson } from "../store/slices/selectedLesson";
+import {
+  Lesson,
+  Module as ModuleType,
+  setCourse,
+} from "../store/slices/player";
+import { useEffect } from "react";
+import { api } from "../lib/api";
 
 export function Player() {
   const modules = useAppSelector((state) => state.player.course.modules);
@@ -12,13 +19,34 @@ export function Player() {
   );
   const dispatch = useDispatch();
 
-  const selectedLesson = modules[moduleIndex].lessons[lessonIndex];
+  const selectedLesson =
+    modules.length > 0
+      ? modules[moduleIndex].lessons[lessonIndex]
+      : ({ duration: "00:00", id: 0, title: "Nenhum" } as Lesson);
+
+  async function fetchModules() {
+    const response = await api.get<
+      unknown,
+      { data: ModuleType[]; status: number },
+      unknown
+    >("/modules");
+    console.log(response.data);
+    dispatch(setCourse({ modules: response.data }));
+  }
+
+  useEffect(() => {
+    fetchModules();
+  }, []);
 
   return (
     <div className="h-screen bg-zinc-950 text-zinc-50 flex justify-center items-center">
       <div className="w-[1100px] flex flex-col gap-6">
         <Header
-          videoClassName={modules[moduleIndex].title}
+          videoClassName={
+            modules.length > 0
+              ? modules[moduleIndex].title
+              : "Nenhum video selecionado"
+          }
           description={"Modulo '" + selectedLesson.title + "'"}
         />
         <main className="relative flex overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 shadow pr-80">
