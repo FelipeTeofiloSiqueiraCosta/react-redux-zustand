@@ -18,6 +18,7 @@ export const loadCourse = createAsyncThunk("player/setCourse", async () => {
     { data: Module[]; status: number },
     unknown
   >("/modules");
+  // await new Promise((resolve) => setTimeout(resolve, 2000)); // adding a delay to simulate a real API request
   return response.data;
   // essa funcão é uma action asyncrona
 });
@@ -28,6 +29,7 @@ export const playerSlice = createSlice({
     course: {
       modules: [] as Module[],
     },
+    isLoading: true,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -35,6 +37,10 @@ export const playerSlice = createSlice({
     // o builder vai atualizar o estado do player
     builder.addCase(loadCourse.fulfilled, (state, action) => {
       state.course.modules = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(loadCourse.pending, (state) => {
+      state.isLoading = true;
     });
   },
 });
