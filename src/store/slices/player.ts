@@ -1,4 +1,5 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { api } from "../../lib/api";
 
 export interface Lesson {
   id: number;
@@ -11,6 +12,16 @@ export interface Module {
   lessons: Lesson[];
 }
 
+export const loadCourse = createAsyncThunk("player/setCourse", async () => {
+  const response = await api.get<
+    unknown,
+    { data: Module[]; status: number },
+    unknown
+  >("/modules");
+  return response.data;
+  // essa funcão é uma action asyncrona
+});
+
 export const playerSlice = createSlice({
   name: "player",
   initialState: {
@@ -18,11 +29,12 @@ export const playerSlice = createSlice({
       modules: [] as Module[],
     },
   },
-  reducers: {
-    setCourse: (state, action: PayloadAction<{ modules: Module[] }>) => {
-      state.course = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    // quando a action loadCourse for completada com sucesso
+    // o builder vai atualizar o estado do player
+    builder.addCase(loadCourse.fulfilled, (state, action) => {
+      state.course.modules = action.payload;
+    });
   },
 });
-
-export const { setCourse } = playerSlice.actions;

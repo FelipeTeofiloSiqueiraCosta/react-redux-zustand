@@ -1,41 +1,37 @@
 import ReactPlayer from "react-player";
 import { Header } from "../components/Header";
 import { Module } from "../components/Module";
-import { useAppSelector } from "../store";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../store";
+
 import { selectNextLesson } from "../store/slices/selectedLesson";
-import {
-  Lesson,
-  Module as ModuleType,
-  setCourse,
-} from "../store/slices/player";
+import { Lesson, loadCourse } from "../store/slices/player";
 import { useEffect } from "react";
-import { api } from "../lib/api";
 
 export function Player() {
   const modules = useAppSelector((state) => state.player.course.modules);
   const { lessonIndex, moduleIndex } = useAppSelector(
     (state) => state.selectedLesson
   );
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const selectedLesson =
     modules.length > 0
       ? modules[moduleIndex].lessons[lessonIndex]
       : ({ duration: "00:00", id: 0, title: "Nenhum" } as Lesson);
 
-  async function fetchModules() {
-    const response = await api.get<
-      unknown,
-      { data: ModuleType[]; status: number },
-      unknown
-    >("/modules");
-    console.log(response.data);
-    dispatch(setCourse({ modules: response.data }));
-  }
+  // async function fetchModules() {
+  // const response = await api.get<
+  //   unknown,
+  //   { data: ModuleType[]; status: number },
+  //   unknown
+  // >("/modules");
+  // console.log(response.data);
+  // dispatch(setCourse({ modules: response.data }));
+  // }
 
   useEffect(() => {
-    fetchModules();
+    // fetchModules();
+    dispatch(loadCourse());
   }, []);
 
   return (

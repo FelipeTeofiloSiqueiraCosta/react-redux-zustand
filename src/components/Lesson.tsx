@@ -1,7 +1,7 @@
 import { Video } from "lucide-react";
-import { useDispatch } from "react-redux";
+
 import { select } from "../store/slices/selectedLesson";
-import { useAppSelector } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 
 interface LessonProps {
   index: number;
@@ -10,7 +10,7 @@ interface LessonProps {
   moduleIndex: number;
 }
 export function Lesson({ title, minutes, index, moduleIndex }: LessonProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const selectedLesson = useAppSelector((state) => state.selectedLesson);
 
   function handleSelectLesson() {
